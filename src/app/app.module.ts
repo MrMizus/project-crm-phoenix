@@ -14,7 +14,7 @@ import { AppComponent } from './app.component';
     AppRoutingModule,
     HttpClientModule,
   ],
-  providers: [],
+  providers: [{provide: Storage, useValue: localStorage}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

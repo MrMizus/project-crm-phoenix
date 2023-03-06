@@ -25,7 +25,7 @@ export class LoginComponent {
   }
 
   onLoginFormSubmitted(loginForm: FormGroup): void {
-    this._authService.create({
+    this._authService.login({
       email: loginForm.get('email')?.value,
       password: loginForm.get('password')?.value
     }).subscribe({
