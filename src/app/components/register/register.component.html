@@ -32,35 +32,41 @@
                   </div>
                   <div class="col mx-auto">
                     <div class="auth-form-box">
-                      <form>
+                      <form [formGroup]="registerForm"
+                      (ngSubmit)="onRegisterFormSubmitted(registerForm)">
                         <div class="mb-3 text-start">
                           <label class="form-label" for="name">Name</label>
-                          <input class="form-control" id="name" type="text" placeholder="Name" />
+                          <input class="form-control" id="name" type="text" [ngClass]=" {'is-invalid': isInvalid('name')}" placeholder="Name" formControlName="name"/>
+                          <div class="invalid-feedback m-2" *ngIf="isInvalid('name')"> Name is required</div>
                         </div>
                         <div class="mb-3 text-start">
                           <label class="form-label" for="email">Email address</label>
-                          <input class="form-control" id="email" type="email" placeholder="name@example.com" />
+                          <input class="form-control" id="email" type="email" [ngClass]=" {'is-invalid': isInvalid('email')}" placeholder="name@example.com" formControlName="email"/>
+                          <div class="invalid-feedback m-2" *ngIf="isInvalid('email')"> Email is invalid and required</div>
                         </div>
                         <div class="row g-3 mb-3">
                           <div class="col-xl-6">
                             <label class="form-label" for="password">Password</label>
-                            <input class="form-control form-icon-input" id="password" type="password"
-                              placeholder="Password" />
+                            <input class="form-control form-icon-input" id="password" type="password" [ngClass]=" {'is-invalid': isInvalid('password')}"
+                              placeholder="Password" formControlName="password"/>
+                            <div class="invalid-feedback m-2" *ngIf="isInvalid('password')">The password should contain at least 8 characters, lowercase and uppercase letter, special character and number</div>
                           </div>
                           <div class="col-xl-6">
                             <label class="form-label" for="confirmPassword">Confirm Password</label>
-                            <input class="form-control form-icon-input" id="confirmPassword" type="password"
-                              placeholder="Confirm Password" />
+                            <input class="form-control form-icon-input" id="confirmPassword" type="password" [ngClass]=" {'is-invalid': registerForm.hasError('isMatch')}"
+                              placeholder="Confirm Password" formControlName="confirmPassword"/>
+                            <div class="invalid-feedback m-2" *ngIf="registerForm.hasError('isMatch')">the password must match</div>
                           </div>
                         </div>
                         <div class="form-check mb-3">
-                          <input class="form-check-input" id="termsService" type="checkbox" />
+                          <input class="form-check-input" id="termsService" type="checkbox" [ngClass]=" {'is-invalid': isInvalid('policy')}" formControlName="policy"/>
                           <label class="form-label fs--1 text-none" for="termsService">I accept the <a href="#!">terms
                             </a>and <a href="#!">privacy policy</a></label>
+                          <div class="invalid-feedback m-2" *ngIf="isInvalid('policy')">Yu must accept policy and terms</div>
                         </div>
-                        <button class="btn btn-primary w-100 mb-3">Sign up</button>
+                        <button class="btn btn-primary w-100 mb-3" type="submit">Sign up</button>
                         <div class="text-center"><a class="fs--1 fw-bold"
-                            href="../../../pages/authentication/card/sign-in.html">Sign in to an existing account</a>
+                            (click)="navToRegister()" role="button">Sign in to an existing account</a>
                         </div>
                       </form>
                     </div>
