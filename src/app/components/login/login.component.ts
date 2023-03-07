@@ -29,7 +29,7 @@ export class LoginComponent {
       email: loginForm.get('email')?.value,
       password: loginForm.get('password')?.value
     }).subscribe({
-      next: () => this._router.navigate(['/auth/register']),
+      next: () => this._router.navigate(['/leads']),
       error: () => {
         this.loginForm.setErrors({ invalidCredentials: "Wrong password or email" });
         this._cdr.detectChanges();

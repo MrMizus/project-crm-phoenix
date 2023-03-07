@@ -6,6 +6,11 @@ import { RegisterComponentModule } from './components/register/register.componen
 import { VerifyComponentModule } from './components/verify/verify.component-module';
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
+import { LeadsComponent } from './components/leads/leads.component';
+import { LeadsComponentModule } from './components/leads/leads.component-module';
+import { EmailVerifiedGuard } from './components/guards/email-verified/email-verified.guard';
+import { CompleteProfileComponent } from './components/complete-profile/complete-profile.component';
+import { CompleteProfileComponentModule } from './components/complete-profile/complete-profile.component-module';
 
 const routes: Routes = [
   { path: 'auth',
@@ -19,11 +24,21 @@ const routes: Routes = [
       component: RegisterComponent
     }
   ], },
-  { path: 'verify', component: VerifyComponent }
+  { path: 'verify', component: VerifyComponent },
+  { path: 'leads', component: LeadsComponent,
+  canActivate: [
+    EmailVerifiedGuard,
+  ],data: {
+    redirectUrlEmail: '/verify',
+  }, },
+  {
+    path: 'complete-profile',
+    component: CompleteProfileComponent
+  }
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes), LoginComponentModule, RegisterComponentModule, VerifyComponentModule],
+  imports: [RouterModule.forRoot(routes), LoginComponentModule, RegisterComponentModule, VerifyComponentModule, LeadsComponentModule, CompleteProfileComponentModule],
   exports: [RouterModule],
 })
 export class AppRoutingModule { }
