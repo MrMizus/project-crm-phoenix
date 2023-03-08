@@ -95,6 +95,7 @@ export class RegisterComponent {
       this.isValid = true
     }
   }
+  
 
   isInvalid(control: string): boolean {
     if (this.isValid) return this.registerForm.get(control)!.invalid
