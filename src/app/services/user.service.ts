@@ -11,4 +11,8 @@ export class UserService {
   public getMeInformation(): Observable<UserResponse> {
     return this._httpClient.get<UserResponse>(`https://us-central1-courses-auth.cloudfunctions.net/auth/me`);
   }
+
+  public getProfileInformation(): Observable<UserResponse> {
+    return this._httpClient.get<UserResponse>(`https://us-central1-courses-auth.cloudfunctions.net/auth/my-bio`);
+  }
 }

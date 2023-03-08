@@ -20,7 +20,6 @@ export class EmailVerifiedGuard implements CanActivate {
     return this._userService.getMeInformation().pipe(
       take(1),
       switchMap((data) => {
-        console.log('test')
         return data.data.user.context.email_verified
           ? of(true)
           : of(

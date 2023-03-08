@@ -38,8 +38,12 @@
                         <h2 class="text-1000"> <span class="fw-normal">Hello </span>John Smith</h2>
                         <p class="text-700">Write down something about yourself</p>
                       </div>
-                      <textarea class="form-control mb-3" placeholder="Write bio here..." rows="8"></textarea><button
-                        class="btn btn-primary w-100" href="../../../index.html">Send</button>
+                      <form [formGroup]="bioForm" (ngSubmit)="onRegisterFormSubmitted(bioForm)"> 
+                        <textarea class="form-control mb-3" formControlName="bio" [ngClass]=" {'is-invalid': isInvalid('bio')}" placeholder="Write bio here..." rows="8"></textarea>
+                        <div class="invalid-feedback m-2" *ngIf="isInvalid('bio')"> Bio should contain at least 10 words and 2 sentences</div>
+                        <button
+                        class="btn btn-primary w-100" type="submit">Send</button>
+                      </form>
                     </div>
                   </div>
                 </div>

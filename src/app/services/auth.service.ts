@@ -1,11 +1,24 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { CredentialsModel, CredentialsResponse, CredentialsResponseData } from '../models/credentials.model';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
+  private _loggedInSubject: BehaviorSubject<boolean> =
+    new BehaviorSubject<boolean>(this.isUserLogged());
+  public loggedIn$: Observable<boolean> = this._loggedInSubject.asObservable();
+
+  public logout(): void {
+    this._loggedInSubject.next(false);
+    this._storage.clear();
+  }
+
+  private isUserLogged(): boolean {
+    return this._storage.hasOwnProperty('accessToken') ?? false;
+  }
+
   constructor(private _httpClient: HttpClient, private _storage: Storage) {
   }
 
@@ -16,6 +29,7 @@ export class AuthService {
       .pipe(
         map((data) => data.data),
         tap((data) => {
+          this._loggedInSubject.next(true);
           this.saveUserStorage(data)
         })
       )
