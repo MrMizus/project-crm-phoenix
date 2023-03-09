@@ -37,9 +37,9 @@ const routes: Routes = [
   { path: 'verify', component: VerifyComponent },
   { path: 'leads', component: LeadsComponent,
   canActivate: [
-    AuthGuard,
     EmailVerifiedGuard,
-    CompleteProfileGuard
+    CompleteProfileGuard,
+    AuthGuard
   ],data: {
     redirectUrlEmail: '/verify',
     redirectLogIn: '/auth/login',

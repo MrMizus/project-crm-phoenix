@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, ViewEncapsulation, ChangeDetectorRef } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
 
 export const hasNumberValidator: ValidatorFn = (
@@ -36,6 +37,14 @@ export const hasSmallValidator: ValidatorFn = (
   return { hasSmall: true };
 };
 
+export const isCheckedValidator: ValidatorFn = (
+  control: AbstractControl
+): ValidationErrors | null => {
+  if (control.value) return null;
+
+  return { isChecked: true };
+};
+
 export const isPasswordMatchValidator: ValidatorFn = (
   control: AbstractControl
 ): ValidationErrors | null => {
@@ -57,7 +66,10 @@ export const isPasswordMatchValidator: ValidatorFn = (
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RegisterComponent {
-  isValid: boolean = false
+  private _isValidSubject: BehaviorSubject<boolean> =
+    new BehaviorSubject<boolean>(false);
+  public isValid$: Observable<boolean> = this._isValidSubject.asObservable();
+
   readonly registerForm: FormGroup = new FormGroup(
     {
       name: new FormControl(undefined, [Validators.required]),
@@ -71,7 +83,7 @@ export class RegisterComponent {
         hasSmallValidator,
       ]),
       confirmPassword: new FormControl(undefined, [Validators.required]),
-      policy: new FormControl(undefined, [Validators.required]),
+      policy: new FormControl(undefined, [isCheckedValidator]),
     },
     { validators: isPasswordMatchValidator }
   );
@@ -92,13 +104,13 @@ export class RegisterComponent {
         }
       });
     } else {
-      this.isValid = true
+      this._isValidSubject.next(true)
     }
   }
   
 
   isInvalid(control: string): boolean {
-    if (this.isValid) return this.registerForm.get(control)!.invalid
+    if (this._isValidSubject.value) return this.registerForm.get(control)!.invalid
     return this.registerForm.get(control)?.touched ?  this.registerForm.get(control)!.invalid : false
   }
 
