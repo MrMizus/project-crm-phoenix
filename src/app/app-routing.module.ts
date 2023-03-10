@@ -16,6 +16,8 @@ import { AlreadyLoggedGuard } from './guards/already-logged/already-logged.guard
 import { CompleteProfileGuard } from './guards/complete-profile/complete-profile.guard';
 import { LogOutComponent } from './components/log-out/log-out.component';
 import { LogOutComponentModule } from './components/log-out/log-out.component-module';
+import { CreateLeadComponent } from './components/create-lead/create-lead.component';
+import { CreateLeadComponentModule } from './components/create-lead/create-lead.component-module';
 
 const routes: Routes = [
   { path: 'auth',
@@ -37,9 +39,9 @@ const routes: Routes = [
   { path: 'verify', component: VerifyComponent },
   { path: 'leads', component: LeadsComponent,
   canActivate: [
+    AuthGuard,
     EmailVerifiedGuard,
     CompleteProfileGuard,
-    AuthGuard
   ],data: {
     redirectUrlEmail: '/verify',
     redirectLogIn: '/auth/login',
@@ -52,11 +54,15 @@ const routes: Routes = [
   {
     path: 'logged-out',
     component: LogOutComponent
+  },
+  {
+    path: 'create-lead',
+    component: CreateLeadComponent
   }
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes), LoginComponentModule, RegisterComponentModule, VerifyComponentModule, LeadsComponentModule, CompleteProfileComponentModule, LogOutComponentModule],
+  imports: [RouterModule.forRoot(routes), LoginComponentModule, RegisterComponentModule, VerifyComponentModule, LeadsComponentModule, CompleteProfileComponentModule, LogOutComponentModule, CreateLeadComponentModule],
   exports: [RouterModule],
 })
 export class AppRoutingModule { }

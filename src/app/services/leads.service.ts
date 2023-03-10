@@ -18,4 +18,8 @@ export class LeadsService {
     return this._httpClient.get<ActivitiesModel>(`https://us-central1-courses-auth.cloudfunctions.net/leads/activities`).pipe(
         map((data) => data.data.map((item) => item)));
   }
+
+  creatLead(lead: LeadsModelData): Observable<void> {
+    return this._httpClient.post<void>('https://us-central1-courses-auth.cloudfunctions.net/leads', { data: lead });
+  }
 }

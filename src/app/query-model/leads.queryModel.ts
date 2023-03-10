@@ -16,4 +16,6 @@ export interface LeadsQueryModel {
     readonly location: string,
     readonly name: string,
     readonly websiteLink: string
+    readonly industry: string
+    readonly linkedinLink: string
 }

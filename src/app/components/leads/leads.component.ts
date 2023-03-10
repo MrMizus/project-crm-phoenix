@@ -16,6 +16,7 @@ import { LeadsService } from '../../services/leads.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LeadsComponent {
+  test: boolean = false
   private _collapsedSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public collapsed$: Observable<boolean> = this._collapsedSubject.asObservable();
 
@@ -34,13 +35,17 @@ export class LeadsComponent {
   constructor(private _authService: AuthService, private _router: Router, private _leadsService: LeadsService) {
   }
 
-  toggleProfileMenu() {
+  toggleProfileMenu():void {
     let isShow: boolean;
     this._collapsedSubject.value ? isShow = false : isShow = true
     this.collapsed$.pipe(
       take(1),
       tap(() => this._collapsedSubject.next(isShow))
     ).subscribe()
+  }
+
+  testF() {
+    this.test = true
   }
 
   public logout(): void {
@@ -59,6 +64,8 @@ export class LeadsComponent {
       location: leads.location,
       name: leads.name,
       websiteLink: leads.websiteLink,
+      industry: leads.industry,
+      linkedinLink: leads.linkedinLink,
       activityIds: leads.activityIds.map((id) => activities[id]),
     }
   }

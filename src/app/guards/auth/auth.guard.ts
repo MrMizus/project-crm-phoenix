@@ -22,6 +22,7 @@ export class AuthGuard implements CanActivate {
   ): Observable<boolean | UrlTree> {
     return this._authService.loggedIn$.pipe(
       map((isLoggedIn) => {
+        console.log(isLoggedIn)
         return isLoggedIn ? true : this._router.parseUrl((
             route.data['redirectLogIn'] || '/auth/login'
           ));
