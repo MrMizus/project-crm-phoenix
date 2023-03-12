@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ViewEncapsulation } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { filter } from 'rxjs/operators';
 import { Router } from '@angular/router';
@@ -31,7 +31,7 @@ export class CompleteProfileComponent {
   isValid: boolean = false
   readonly bioForm: FormGroup = new FormGroup({ bio: new FormControl('', [leastTenWorldsValidator, leastTwoSentenceValidator, Validators.required]) });
 
-  constructor(private _router: Router, private _authService: AuthService) {
+  constructor(private _router: Router, private _authService: AuthService, private _cdr: ChangeDetectorRef) {
   }
 
   public onRegisterFormSubmitted(bioForm: FormGroup): void {
@@ -44,7 +44,11 @@ export class CompleteProfileComponent {
         .subscribe({
           next: () => {
             this._router.navigateByUrl('/leads')
-          }
+          },
+          error: () => {
+            this.bioForm.setErrors({ invalidCredentials: "Something went wrong while sending" });
+            this._cdr.detectChanges();
+          },
         });
     } else {
       this.isValid = true

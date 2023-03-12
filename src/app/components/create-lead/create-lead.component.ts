@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ViewEncapsulation } from '@angular/core';
 import { AbstractControl, FormArray, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { take, tap } from 'rxjs/operators';
@@ -117,9 +117,9 @@ export class CreateLeadComponent {
             total: leadForm.get('total')?.value,
           },
           hiring: {
-            active: leadForm.get('active')?.value,
-            junior: leadForm.get('junior')?.value,
-            talentProgram: leadForm.get('talentProgram')?.value,
+            active: leadForm.get('active')?.value ? true : false,
+            junior: leadForm.get('junior')?.value ? true : false,
+            talentProgram: leadForm.get('talentProgram')?.value ? true : false,
           },
           location: leadForm.get('location')?.value,
           name: leadForm.get('name')?.value,
@@ -130,7 +130,11 @@ export class CreateLeadComponent {
           next: () => {
             console.log('działa')
             this._router.navigateByUrl('/leads')
-          }
+          },
+          error: () => {
+            this.leadForm.setErrors({ invalidCredentials: "Something went wrong while sending" });
+            this._cdr.detectChanges();
+          },
         })
 
     } else {
@@ -147,5 +151,5 @@ export class CreateLeadComponent {
     this._router.navigateByUrl('/leads')
   }
 
-  constructor(private _leadsService: LeadsService, private _router: Router, private _authService: AuthService) { }
+  constructor(private _leadsService: LeadsService, private _router: Router, private _authService: AuthService, private _cdr: ChangeDetectorRef) { }
 }

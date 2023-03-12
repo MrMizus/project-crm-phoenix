@@ -41,6 +41,9 @@
                       <form [formGroup]="bioForm" (ngSubmit)="onRegisterFormSubmitted(bioForm)"> 
                         <textarea class="form-control mb-3" formControlName="bio" [ngClass]=" {'is-invalid': isInvalid('bio')}" placeholder="Write bio here..." rows="8"></textarea>
                         <div class="invalid-feedback m-2" *ngIf="isInvalid('bio')"> Bio should contain at least 10 words and 2 sentences</div>
+                        <div *ngIf="bioForm.hasError('invalidCredentials')">{{
+                          bioForm.getError('invalidCredentials')
+                        }}</div>
                         <button
                         class="btn btn-primary w-100" type="submit">Send</button>
                       </form>

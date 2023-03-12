@@ -64,6 +64,9 @@
                             </a>and <a href="#!">privacy policy</a></label>
                           <div class="invalid-feedback m-2" *ngIf="isInvalid('policy')">You must accept policy and terms</div>
                         </div>
+                        <div *ngIf="registerForm.hasError('invalidCredentials')">{{
+                          registerForm.getError('invalidCredentials')
+                        }}</div>
                         <button class="btn btn-primary w-100 mb-3" type="submit">Sign up</button>
                         <div class="text-center"><a class="fs--1 fw-bold"
                             (click)="navToRegister()" role="button">Sign in to an existing account</a>

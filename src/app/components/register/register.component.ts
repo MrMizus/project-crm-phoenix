@@ -101,7 +101,11 @@ export class RegisterComponent {
       .subscribe({
         next: () => {
           this._router.navigateByUrl('/verify')
-        }
+        },
+        error: () => {
+          this.registerForm.setErrors({ invalidCredentials: "Something went wrong while sending" });
+          this._cdr.detectChanges();
+        },
       });
     } else {
       this._isValidSubject.next(true)

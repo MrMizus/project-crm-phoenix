@@ -139,9 +139,9 @@
                         <div *ngFor="let activity of leads.activityIds"><span class="badge badge-phoenix badge-phoenix-warning">{{activity}}</span></div>
                       </td>
                       <td class="align-middle white-space-nowrap fw-semi-bold text-1000 ps-4 border-end">
-                        <div>Is hiring: {{leads.hiring.active}}<i class="fa-solid fa-check"></i></div>
-                        <div>Juniors: {{leads.hiring.junior}}<i class="fa-solid fa-check"></i></div>
-                        <div>Talent Program : {{leads.hiring.talentProgram}}<i class="fa-solid fa-check"></i></div>
+                        <div>Is hiring: <i class="fa-solid" [ngClass]="{'fa-check': leads.hiring.active, 'fa-xmark': !leads.hiring.active}"></i></div>
+                        <div>Juniors: <i class="fa-solid" [ngClass]="{'fa-check': leads.hiring.active, 'fa-xmark': !leads.hiring.active}"></i></div>
+                        <div>Talent Program : <i class="fa-solid" [ngClass]="{'fa-check': leads.hiring.active, 'fa-xmark': !leads.hiring.active}"></i></div>
                       </td>
                       <td class="company align-middle white-space-nowrap text-600 ps-4 border-end fw-semi-bold text-1000">
                         {{leads.industry}}</td>
