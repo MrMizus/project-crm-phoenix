@@ -19,7 +19,7 @@ export class AuthorizationInterceptor implements HttpInterceptor {
   }
 
   private addAuthToken(request: HttpRequest<any>) {
-    const accessList = ['/auth/me', '/auth/my-bio', '/auth/add-bio'];
+    const accessList = ['/auth/me', '/auth/my-bio', '/auth/add-bio', '/leads'];
     const token = this._storage.getItem('accessToken');
 
     if (token && accessList.find((url) => request.url.endsWith(url))) {

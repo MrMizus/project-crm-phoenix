@@ -51,6 +51,16 @@ export class AuthService {
     return this._httpClient.post<void>('https://us-central1-courses-auth.cloudfunctions.net/auth/add-bio', { data: content });
   }
 
+  refreshToken(token: string | null): Observable<CredentialsResponseData> {
+    return this._httpClient.post<CredentialsResponse>('https://us-central1-courses-auth.cloudfunctions.net/auth/refresh', {data: {refreshToken: token}})
+    .pipe(
+      map((data) => data.data),
+      tap((data) => {
+        this.saveUserStorage(data)
+      })
+    )
+  }
+
   private saveUserStorage(data: CredentialsResponseData): void {
     this._storage.setItem('id', data.id);
     this._storage.setItem('accessToken', data.accessToken);

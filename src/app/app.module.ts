@@ -6,6 +6,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AuthorizationInterceptor } from './interceptors/authorization.interceptor';
 import { EmailVerifiedGuard } from './guards/email-verified/email-verified.guard';
+import { RefreshTokenInterceptor } from './interceptors/refresh.interceptor';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,11 @@ import { EmailVerifiedGuard } from './guards/email-verified/email-verified.guard
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthorizationInterceptor,
+      multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: RefreshTokenInterceptor,
       multi: true,
     },
     EmailVerifiedGuard,],

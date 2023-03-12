@@ -53,77 +53,45 @@
             <div class="row g-3 justify-content-between mb-4">
               <div class="col-auto">
                 <div class="d-md-flex justify-content-between">
-                  <div>
-                    <button class="btn btn-primary me-4"><span class="fas fa-plus me-2"></span>Create Lead</button>
+                  <div *ngIf="isAdmin$ | async">
+                    <button class="btn btn-primary me-4" (click)="navigateTo('/create-lead')"><span class="fas fa-plus me-2"></span>Create Lead</button>
                   </div>
                 </div>
               </div>
               <div class="col-auto">
                 <div class="d-flex">
-                  <button class="btn px-3 btn-phoenix-secondary" (click)="testF()" type="button" data-bs-toggle="modal" data-bs-target="#filterModal" data-boundary="window" aria-haspopup="true" aria-expanded="false" data-bs-reference="parent"><span class="fa-solid fa-filter text-primary" data-fa-transform="down-3"></span>filter</button>
-                  <div class="modal fade show" id="filterModal" tabindex="-1">
+                  <button class="btn px-3 btn-phoenix-secondary" (click)="showFilter()" type="button" data-bs-toggle="modal" data-bs-target="#filterModal" data-boundary="window" aria-haspopup="true" aria-expanded="false" data-bs-reference="parent"><span class="fa-solid fa-filter text-primary" data-fa-transform="down-3"></span></button>
+                  <div class="modal fade" [ngClass]="{'show-modal': showFilter$ | async, 'show': showFilter$}" id="filterModal" tabindex="-1">
                     <div class="modal-dialog modal-dialog-centered">
                       <div class="modal-content border">
-                        <form id="addEventForm" autocomplete="off">
+                        <div [formGroup]="filterForm">
                           <div class="modal-header border-200 p-4">
                             <h5 class="modal-title text-1000 fs-2 lh-sm">Filter</h5>
-                            <button class="btn p-1 text-900" type="button" data-bs-dismiss="modal" aria-label="Close"><span class="fas fa-times fs--1"> </span></button>
+                            <button class="btn p-1 text-900" type="button" data-bs-dismiss="modal" (click)="hideFilter()" aria-label="Close"><span class="fas fa-times fs--1"> </span></button>
                           </div>
                           <div class="modal-body pt-4 pb-2 px-4">
-                            <div class="mb-3">
-                              <label class="fw-bold mb-2 text-1000" for="leadStatus">Sales Stage</label>
-                              <select class="form-select" id="leadStatus">
-                                <option value="newLead" selected="selected">Preliminaries</option>
-                                <option value="coldLead">Investigation</option>
-                                <option value="canceled">Demonstrating Capabilities</option>
-                                <option value="wonLead">Obtaining Commitment</option>
-                                <option value="wonLead">No Match</option>
-                              </select>
-                            </div>
-                            <div class="mb-3">
+                            <div class="mb-3" formGroupName="scope">
                               <label class="fw-bold mb-2 text-1000" for="createDate">Scope</label>
-                              <div class="form-check">
-                                <input class="form-check-input" id="flexCheckDefault" type="checkbox" value="">
-                                <label class="form-check-label" for="flexCheckDefault">Internal Project</label>
-                              </div>
-                              <div class="form-check">
-                                <input class="form-check-input" id="flexCheckChecked" type="checkbox" value="" checked="">
-                                <label class="form-check-label" for="flexCheckChecked">External Project</label>
-                              </div>
-                              <div class="form-check">
-                                <input class="form-check-input" id="flexCheckChecked" type="checkbox" value="" checked="">
-                                <label class="form-check-label" for="flexCheckChecked">Recruitment Agency</label>
+                              <div class="form-check" *ngFor="let activities of activities$ | async">
+                                <input class="form-check-input" [formControlName]="activities.id" id="flexCheckDefault" type="checkbox">
+                                <label class="form-check-label" for="flexCheckDefault">{{activities.name}}</label>
                               </div>
                             </div>
-                            <div class="mb-3">
+                            <div class="mb-3" formGroupName="size">
                               <label class="fw-bold mb-2 text-1000" for="createDate">Size</label>
-                              <div class="form-check">
-                                <input class="form-check-input" id="flexCheckDefault" type="checkbox" value="">
-                                <label class="form-check-label" for="flexCheckDefault">0-50</label>
-                              </div>
-                              <div class="form-check">
-                                <input class="form-check-input" id="flexCheckChecked" type="checkbox" value="" checked="">
-                                <label class="form-check-label" for="flexCheckChecked">51-100</label>
-                              </div>
-                              <div class="form-check">
-                                <input class="form-check-input" id="flexCheckChecked" type="checkbox" value="" checked="">
-                                <label class="form-check-label" for="flexCheckChecked">101-500</label>
-                              </div>
-                              <div class="form-check">
-                                <input class="form-check-input" id="flexCheckChecked" type="checkbox" value="" checked="">
-                                <label class="form-check-label" for="flexCheckChecked">501-1000</label>
-                              </div>
-                              <div class="form-check">
-                                <input class="form-check-input" id="flexCheckChecked" type="checkbox" value="" checked="">
-                                <label class="form-check-label" for="flexCheckChecked">1001+</label>
+                              <div class="form-check" *ngFor="let size of size$ | async">
+                                <input class="form-check-input" id="flexCheckDefault" [formControlName]="size" type="checkbox">
+                                <label class="form-check-label" for="flexCheckDefault">{{size}}</label>
                               </div>
                             </div>
                           </div>
-                          <div class="modal-footer d-flex justify-content-end align-items-center px-4 pb-4 border-0 pt-3">
-                            <button class="btn btn-sm btn-phoenix-primary px-4 fs--2 my-0" type="submit"> <span class="fas fa-arrows-rotate me-2 fs--2"></span>Reset</button>
-                            <button class="btn btn-sm btn-primary px-9 fs--2 my-0" type="submit">Done</button>
+                          <div *ngIf="sizeValue$ | async as size ">
+                            <div class="modal-footer d-flex justify-content-end align-items-center px-4 pb-4 border-0 pt-3" *ngIf="activitiesIds$ | async as activitiesIds ">
+                              <button class="btn btn-phoenix-primary px-4 fs--2 my-0" (click)="restFilters()"> <span class="fas fa-arrows-rotate me-2 fs--2"></span>Reset</button>
+                              <button class="btn btn-primary px-9 fs--2 my-0" (click)="hideFilter()" (click)="activitiesIdsToData(activitiesIds, size)">Done</button>
+                            </div>
                           </div>
-                        </form>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -162,13 +130,13 @@
                         <div class="d-flex align-items-center">
                           <div><a class="fs-0 fw-bold">{{leads.name}}</a>
                             <div class="d-flex align-items-center justify-content-around">
-                              <a href="#"><i class="fa-brands fa-linkedin"></i></a>
-                              <a href="#"><i class="fa-solid fa-link"></i></a>
+                              <a ><i class="fa-brands fa-linkedin"></i></a>
+                              <a ><i class="fa-solid fa-link"></i></a>
                             </div>
                           </div>
                       </div></td>
                       <td class="align-middle white-space-nowrap fw-semi-bold text-1000 ps-4 border-end">
-                        <div *ngFor="let activity of leads.activityIds"><span class="badge badge-phoenix badge-phoenix-warning">{{activity.name}}</span></div>
+                        <div *ngFor="let activity of leads.activityIds"><span class="badge badge-phoenix badge-phoenix-warning">{{activity}}</span></div>
                       </td>
                       <td class="align-middle white-space-nowrap fw-semi-bold text-1000 ps-4 border-end">
                         <div>Is hiring: {{leads.hiring.active}}<i class="fa-solid fa-check"></i></div>

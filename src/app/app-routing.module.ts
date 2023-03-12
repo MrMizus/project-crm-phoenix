@@ -18,6 +18,7 @@ import { LogOutComponent } from './components/log-out/log-out.component';
 import { LogOutComponentModule } from './components/log-out/log-out.component-module';
 import { CreateLeadComponent } from './components/create-lead/create-lead.component';
 import { CreateLeadComponentModule } from './components/create-lead/create-lead.component-module';
+import { IsAdminGuard } from './guards/is-admin/is-admin.guard';
 
 const routes: Routes = [
   { path: 'auth',
@@ -43,7 +44,7 @@ const routes: Routes = [
     EmailVerifiedGuard,
     CompleteProfileGuard,
   ],data: {
-    redirectUrlEmail: '/verify',
+    redirectVerify: '/verify',
     redirectLogIn: '/auth/login',
     redirectProfile: '/complete-profile'
   }, },
@@ -57,7 +58,12 @@ const routes: Routes = [
   },
   {
     path: 'create-lead',
-    component: CreateLeadComponent
+    component: CreateLeadComponent,
+    canActivate: [
+      IsAdminGuard
+    ], data: {
+      redirectLeads: '/leads'
+    }
   }
 ];
 

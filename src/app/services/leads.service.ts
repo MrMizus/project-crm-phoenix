@@ -20,6 +20,6 @@ export class LeadsService {
   }
 
   creatLead(lead: LeadsModelData): Observable<void> {
-    return this._httpClient.post<void>('https://us-central1-courses-auth.cloudfunctions.net/leads', { data: lead });
+    return this._httpClient.post<void>(`https://us-central1-courses-auth.cloudfunctions.net/leads`, { data: lead });
   }
 }

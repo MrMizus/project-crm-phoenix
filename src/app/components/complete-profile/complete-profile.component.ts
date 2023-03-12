@@ -34,7 +34,7 @@ export class CompleteProfileComponent {
   constructor(private _router: Router, private _authService: AuthService) {
   }
 
-  onRegisterFormSubmitted(bioForm: FormGroup): void {
+  public onRegisterFormSubmitted(bioForm: FormGroup): void {
     if (bioForm.valid) {
       console.log("valid")
       this._authService
@@ -51,7 +51,7 @@ export class CompleteProfileComponent {
     }
   }
 
-  isInvalid(control: string): boolean {
+  public  isInvalid(control: string): boolean {
     if (this.isValid) return this.bioForm.get(control)!.invalid
     return this.bioForm.get(control)?.touched ? this.bioForm.get(control)!.invalid : false
   }

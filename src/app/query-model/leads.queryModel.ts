@@ -1,7 +1,7 @@
 import {  ActivitiesModelData } from "../models/activities.model"
 
 export interface LeadsQueryModel {
-    readonly activityIds: ActivitiesModelData[],
+    readonly activityIds: string[],
     readonly annualRevenue: number,
     readonly companySize: {
         readonly dev: number,

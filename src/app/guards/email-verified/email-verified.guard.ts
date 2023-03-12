@@ -9,7 +9,7 @@ import {
 import { Observable, of, switchMap, take } from 'rxjs';
 import { UserService } from 'src/app/services/user.service';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class EmailVerifiedGuard implements CanActivate {
   constructor(private _userService: UserService, private _router: Router) {}
 
@@ -24,7 +24,7 @@ export class EmailVerifiedGuard implements CanActivate {
           ? of(true)
           : of(
               this._router.parseUrl(
-                route.data['redirectUrlEmail'] || '/verify'
+                route.data['redirectVerify'] || '/verify'
               )
             );
       })

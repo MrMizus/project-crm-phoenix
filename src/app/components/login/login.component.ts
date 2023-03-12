@@ -16,15 +16,15 @@ export class LoginComponent {
   constructor(private _router: Router, private _authService: AuthService, private _cdr: ChangeDetectorRef) {
   }
 
-  isInvalidEmail(): boolean {
+  public isInvalidEmail(): boolean {
     return this.loginForm.get('email')?.value === '' ? false: this.loginForm.get('email')!.invalid
   }
 
-  navToRegister(): void {
+  public navToRegister(): void {
     this._router.navigate(['/auth/register'])
   }
 
-  onLoginFormSubmitted(loginForm: FormGroup): void {
+  public onLoginFormSubmitted(loginForm: FormGroup): void {
     this._authService.login({
       email: loginForm.get('email')?.value,
       password: loginForm.get('password')?.value

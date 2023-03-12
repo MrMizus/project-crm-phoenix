@@ -18,33 +18,25 @@
             </a>
           </div>
           <ul class="navbar-nav navbar-nav-icons flex-row">
-            <li class="nav-item dropdown"><a class="nav-link lh-1 pe-0" id="navbarDropdownUser" href="#!" role="button"
-                data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-haspopup="true" aria-expanded="false">
+            <li class="nav-item dropdown"><a class="nav-link lh-1 pe-0 show" id="navbarDropdownUser" (click)="toggleProfileMenu()" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-haspopup="true" aria-expanded="true">
                 <div class="avatar avatar-l ">
-                  <img class="rounded-circle " src="../../assets/img/team/40x40/57.webp" alt="" />
-
+                  <img class="rounded-circle " src="assets/img/team/40x40/57.webp" alt="">
                 </div>
               </a>
-              <div
-                class="dropdown-menu dropdown-menu-end navbar-dropdown-caret py-0 dropdown-profile shadow border border-300"
-                aria-labelledby="navbarDropdownUser">
+              <div class="dropdown-menu dropdown-menu-end navbar-dropdown-caret py-0 dropdown-profile shadow border border-300 show" [ngClass]="{show: collapsed$ | async }" aria-labelledby="navbarDropdownUser" data-bs-popper="static">
                 <div class="card position-relative border-0">
                   <div class="card-body p-0">
-                    <div class="text-center pt-4 pb-3">
+                    <div class="text-center pt-4">
                       <div class="avatar avatar-xl ">
-                        <img class="rounded-circle " src="../../assets/img/team/72x72/57.webp" alt="" />
-
+                        <img class="rounded-circle " src="assets/img/team/72x72/57.webp" alt="">
                       </div>
                       <h6 class="mt-2 text-black">Jerry Seinfield</h6>
                     </div>
                   </div>
-
-                  <div class="card-footer p-0 border-top">
-                    <div class="px-3 mt-3"> <a class="btn btn-phoenix-secondary d-flex flex-center w-100" href="#!">
-                        <span class="me-2" data-feather="log-out"> </span>Sign out</a></div>
-                    <div class="my-2 text-center fw-bold fs--2 text-600"><a class="text-600 me-1" href="#!">Privacy
-                        policy</a>&bull;<a class="text-600 mx-1" href="#!">Terms</a>&bull;<a class="text-600 ms-1"
-                        href="#!">Cookies</a></div>
+                  <div class="overflow-auto scrollbar">
+                    <hr>
+                    <div class="px-3"> <a class="btn btn-phoenix-secondary d-flex flex-center w-100" (click)="logout()" > <svg xmlns="http://www.w3.org/2000/svg" width="16px" height="16px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-log-out me-2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>Sign out</a></div>
+                    <div class="my-2 text-center fw-bold fs--2 text-600"><a class="text-600 me-1" >Privacy policy</a>•<a class="text-600 mx-1" >Terms</a>•<a class="text-600 ms-1" >Cookies</a></div>
                   </div>
                 </div>
               </div>
@@ -60,8 +52,8 @@
               <div class="d-sm-flex justify-content-between">
                 <h2 class="mb-4">Create a new lead</h2>
                 <div class="d-flex mb-3">
-                  <button class="btn btn-phoenix-primary me-2 px-6">Cancel</button>
-                  <button class="btn btn-primary">Create lead</button>
+                  <button class="btn btn-phoenix-primary me-2 px-6" (click)="backToLeads()">Cancel</button>
+                  <button class="btn btn-primary" (click)="onRegisterFormSubmitted(leadForm)">Create lead</button>
                 </div>
               </div>
             </div>
@@ -73,39 +65,45 @@
             <form class="row g-3 mb-9" [formGroup]="leadForm" (ngSubmit)="onRegisterFormSubmitted(leadForm)">
               <div class="col-sm-6 col-md-4">
                 <div class="form-floating">
-                  <input class="form-control" id="floatingInputCompanyname" type="text" placeholder="Company name" formControlName="name"/>
+                  <input class="form-control" id="floatingInputCompanyname" type="text" [ngClass]=" {'is-invalid': isInvalid('name')}" placeholder="Company name" formControlName="name"/>
                   <label for="floatingInputCompanyname">Company name</label>
                 </div>
+                <div class="text-danger m-2" *ngIf="isInvalid('name')">Name is required</div>
               </div>
               <div class="col-sm-6 col-md-4">
                 <div class="form-floating">
                   <input class="form-control" id="floatingInputWebsitelink" formControlName="websiteLink" [ngClass]=" {'is-invalid': isInvalid('websiteLink')}" type="text" placeholder="Website link" formControlName="websiteLink" />
                   <label for="floatingInputWebsitelink">Website link</label>
                 </div>
+                <div class="text-danger m-2" *ngIf="isInvalid('websiteLink')">Should be valid url</div>
               </div>
               <div class="col-sm-6 col-md-4">
                 <div class="form-floating">
-                  <input class="form-control" id="floatingInputLinkedin" type="text" placeholder="Linkedin link" />
+                  <input class="form-control" id="floatingInputLinkedin" formControlName="linkedinLink" [ngClass]=" {'is-invalid': isInvalid('linkedinLink')}"  type="text" placeholder="Linkedin link" />
                   <label for="floatingInputLinkedin">Linkedin link</label>
                 </div>
+                <div class="text-danger m-2" *ngIf="isInvalid('linkedinLink')">Should be valid Linkedin url</div>
               </div>
               <div class="col-sm-6 col-md-4">
                 <div class="form-floating">
-                  <input class="form-control" id="floatingInputLocation" formControlName="location" type="text" placeholder="Location" />
+                  <input class="form-control" id="floatingInputLocation" formControlName="location" [ngClass]=" {'is-invalid': isInvalid('location')}" type="text" placeholder="Location" />
                   <label for="floatingInputLocation">Location</label>
                 </div>
+                <div class="text-danger m-2" *ngIf="isInvalid('location')">Location is required</div>
               </div>
               <div class="col-sm-6 col-md-4">
                 <div class="form-floating">
-                  <input class="form-control" id="floatingInputIndustry" type="text" formControlName="industry" placeholder="Industry" />
+                  <input class="form-control" id="floatingInputIndustry" type="text" [ngClass]=" {'is-invalid': isInvalid('industry')}" formControlName="industry" placeholder="Industry" />
                   <label for="floatingInputIndustry">Industry</label>
                 </div>
+                <div class="text-danger m-2" *ngIf="isInvalid('industry')">Industry is required</div>
               </div>
               <div class="col-sm-6 col-md-4">
                 <div class="form-floating">
-                  <input class="form-control" id="floatingInputRevenue" type="text" formControlName="annualRevenue" placeholder="revenue" />
+                  <input class="form-control" id="floatingInputRevenue" type="text" [ngClass]=" {'is-invalid': isInvalid('annualRevenue')}" formControlName="annualRevenue" placeholder="revenue" />
                   <label for="floatingInputRevenue">Annual revenue </label>
                 </div>
+                <div class="text-danger m-2" *ngIf="isInvalid('annualRevenue')">Annual revenue is required</div>
               </div>
               <h4 class="mt-6">Activities</h4>
               <div class="col-12">
